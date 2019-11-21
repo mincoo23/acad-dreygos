@@ -2,19 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Copy index.html to Apache server') {
             steps {
-                echo 'Building..'
+                echo 'Copying...'
+                scp /var/lib/jenkins/workspace/acad-dreygos-pipeline/index.html ec2-user@54.244.169.245:/home/ec2-user
             }
         }
-        stage('Test') {
+        stage('SSH into Apache instance') {
             steps {
-                echo 'Testing..'
+                echo 'SSH-ing...'
+                ssh ec2-user@54.244.169.245
             }
         }
-        stage('Deploy') {
+        stage('Copy index.html file into Apache folder') {
             steps {
-                echo 'Deploying....'
+                echo 'Copying...'
+                sudo mv index.html /var/www/html/index.html
+                exit
             }
         }
     }
