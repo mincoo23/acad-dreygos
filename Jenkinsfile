@@ -8,22 +8,15 @@ pipeline {
                 sh 'scp /var/lib/jenkins/workspace/acad-dreygos-pipeline/index.html ec2-user@54.244.169.245:/home/ec2-user'
             }
         }
-        stage('SSH into Apache instance') {
+        stage('SSH into Apache instance and copy index.html into correct location') {
             steps {
                 echo 'SSH-ing...'
-                sh 'whoami'
-                sh 'ssh ec2-user@54.244.169.245 "whoami && pwd && sudo mv index.html /var/www/html/index.html && exit"'//sudo mv index.html /var/www/html/index.html | exit'
-                //sh 'whoami'
-                //sh 'sudo mv index.html /var/www/html/index.html'
-                //sh 'exit'
+                sh 'ssh ec2-user@54.244.169.245 "sudo mv index.html /var/www/html/index.html && exit"'
             }
         }
-        stage('Copy index.html file into Apache folder') {
+        stage('Some stage to be used later') {
             steps {
-                echo 'Copying...'
-                //sh 'whoami'
-                //sh 'sudo mv index.html /var/www/html/index.html'
-                //sh 'exit'
+                echo 'Hello...'
             }
         }
     }
