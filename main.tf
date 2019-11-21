@@ -8,5 +8,5 @@ resource "aws_instance" "acad-dreygos-ec2-terraform" {
     subnet_id = "subnet-0e03ced33bf07aa81"
     tags = {
         name = "acad-dreygos-ec2-terraform"
-        }
     }
+}
