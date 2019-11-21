@@ -13,14 +13,17 @@ pipeline {
                 echo 'SSH-ing...'
                 sh 'whoami'
                 sh 'ssh ec2-user@54.244.169.245'
+                sh 'whoami'
+                sh 'sudo mv index.html /var/www/html/index.html'
+                sh 'exit'
             }
         }
         stage('Copy index.html file into Apache folder') {
             steps {
                 echo 'Copying...'
-                sh 'whoami'
-                sh 'sudo mv index.html /var/www/html/index.html'
-                sh 'exit'
+                //sh 'whoami'
+                //sh 'sudo mv index.html /var/www/html/index.html'
+                //sh 'exit'
             }
         }
     }
