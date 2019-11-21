@@ -18,7 +18,7 @@ pipeline {
             steps {
                 echo 'Copying...'
                 sh 'sudo mv index.html /var/www/html/index.html'
-                exit
+                sh 'exit'
             }
         }
     }
