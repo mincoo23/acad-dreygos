@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'SSH-ing...'
                 sh 'whoami'
-                sh 'ssh -tt -i ~/.ssh/id_rsa.pub ec2-user@54.244.169.245 -o StrictHostKeyChecking=no'
+                sh 'ssh ec2-user@54.244.169.245'// -o StrictHostKeyChecking=no'
             }
         }
         stage('Copy index.html file into Apache folder') {
