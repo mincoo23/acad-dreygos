@@ -11,6 +11,7 @@ pipeline {
         stage('SSH into Apache instance') {
             steps {
                 echo 'SSH-ing...'
+                sh 'whoami'
                 sh 'ssh -tt -i ~/.ssh/id_rsa.pub ec2-user@54.244.169.245 -o StrictHostKeyChecking=no'
             }
         }
