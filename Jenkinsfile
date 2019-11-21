@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo 'SSH-ing...'
                 sh 'whoami'
-                sh 'ssh ec2-user@54.244.169.245 | sudo mv index.html /var/www/html/index.html | exit'
+                sh 'ssh ec2-user@54.244.169.245 | whoami'//sudo mv index.html /var/www/html/index.html | exit'
                 //sh 'whoami'
                 //sh 'sudo mv index.html /var/www/html/index.html'
                 //sh 'exit'
