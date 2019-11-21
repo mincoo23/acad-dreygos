@@ -11,7 +11,7 @@ pipeline {
         stage('SSH into Apache instance') {
             steps {
                 echo 'SSH-ing...'
-                sh 'ssh ec2-user@54.244.169.245'
+                sh 'ssh ec2-user@54.244.169.245 -o StrictHostKeyChecking=no'
             }
         }
         stage('Copy index.html file into Apache folder') {
