@@ -14,9 +14,12 @@ pipeline {
                 sh 'ssh ec2-user@54.244.169.245 "sudo mv index.html /var/www/html/index.html && exit"'
             }
         }
-        stage('Some stage to be used later') {
+        stage('Deploying Terraform resources') {
             steps {
-                echo 'Hello...'
+                echo 'Deploying...'
+                sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
+                sh 'terraform plan'
+                sh 'terraform apply'
             }
         }
     }
