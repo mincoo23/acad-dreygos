@@ -17,7 +17,7 @@ pipeline {
         stage('Deploying Terraform resources') {
             steps {
                 echo 'Deploying...'
-                sh 'cd ~ && pwd'
+                sh 'cd ~/.aws && pwd'
                 sh 'pwd'
                 sh 'pwd'
                 sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
