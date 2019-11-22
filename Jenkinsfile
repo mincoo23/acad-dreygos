@@ -20,7 +20,7 @@ pipeline {
                 sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
                 sh "sudo terraform init"
                 sh "sudo terraform plan"
-                sh "sudo terraform apply -y"
+                sh "sudo terraform apply -auto-approve"
             }
         }
     }
