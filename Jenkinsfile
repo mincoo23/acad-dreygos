@@ -18,6 +18,7 @@ pipeline {
             steps {
                 echo 'Deploying...'
                 sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
+                sh 'pwd'
                 sh "sudo terraform plan | echo ''"
                 sh "sudo terraform apply | echo ''"
             }
