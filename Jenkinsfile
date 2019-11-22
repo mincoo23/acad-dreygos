@@ -17,10 +17,7 @@ pipeline {
         stage('Deploying Terraform resources') {
             steps {
                 echo 'Deploying...'
-                sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
-                sh 'sudo su'
-                sh 'terraform plan'
-                sh 'terraform apply'
+                sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline && sudo su && terraform plan && terraform apply'
             }
         }
     }
