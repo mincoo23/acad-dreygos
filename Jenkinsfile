@@ -22,6 +22,7 @@ pipeline {
                 sh 'pwd'
                 sh 'cd /var/lib/jenkins/workspace/acad-dreygos-pipeline'
                 sh 'pwd'
+                sh "sudo terraform init"
                 sh "sudo terraform plan"
                 sh "sudo terraform apply"
             }
