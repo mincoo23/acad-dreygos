@@ -1,7 +1,7 @@
 variable "region" {
     type = string
     description = "The AWS region to launch infrastructure in."
-    default = "us-west-2"
+    default = "us-central-1"
 }
 
 variable "prefix" {
