@@ -1,12 +1,13 @@
 provider "aws" {
-    region = "us-west-2"
+    region = var.region
 }
 
-resource "aws_instance" "acad-dreygos-ec2-terraform" {
-    ami = "ami-0a85857bfc5345c38"
-    instance_type = "t2.micro"
-    subnet_id = "subnet-0e03ced33bf07aa81"
+resource "aws_vpc" "acad-dreygos-vpc" {
+    cidr_block = "10.0.0.0/16"
+    enable_dns_hostnames = true
+    
     tags = {
-        name = "acad-dreygos-ec2-terraform"
+        Name = "${var.prefix}-vpc"
+        Creator = var.creator
     }
 }
