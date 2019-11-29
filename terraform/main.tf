@@ -23,3 +23,12 @@ resource "aws_subnet" "acad-dreygosi-subnet" {
     Creator = var.creator
   }
 }
+
+resource "aws_internet_gateway" "acad-dreygosi-igw" {
+  vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
+
+  tags {
+    Name = "${var.prefix}-igw"
+    Creator = var.creator
+  }
+}
