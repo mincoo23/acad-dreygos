@@ -4,6 +4,12 @@ variable "region" {
     default = "eu-central-1"
 }
 
+variable "availability_zone" {
+  type = string
+  description = "The availability zone to associate with the subnet."
+  default = "eu-central-1a"
+}
+
 variable "prefix" {
     type = string
     description = "Prefix used to append in front of resource names."
