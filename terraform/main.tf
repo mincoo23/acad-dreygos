@@ -3,23 +3,23 @@ provider "aws" {
 }
 
 resource "aws_vpc" "acad-dreygosi-vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
-  
+
   tags = {
-    Name = "${var.prefix}-vpc"
+    Name    = "${var.prefix}-vpc"
     Creator = var.creator
   }
 }
 
 resource "aws_subnet" "acad-dreygosi-subnet" {
-  vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
-  cidr_block = "10.0.0.0/24"
-  availability_zone = var.availability_zone
+  vpc_id                  = "${aws_vpc.acad-dreygosi-vpc.id}"
+  cidr_block              = "10.0.0.0/24"
+  availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${var.prefix}-subnet"
+    Name    = "${var.prefix}-subnet"
     Creator = var.creator
   }
 }
@@ -28,16 +28,13 @@ resource "aws_internet_gateway" "acad-dreygosi-igw" {
   vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
 
   tags = {
-    Name = "${var.prefix}-igw"
+    Name    = "${var.prefix}-igw"
     Creator = var.creator
   }
 }
 
-resource "aws_route_table" "acad-dreygosi-rt" {
-  vpc_id = aws_vpc.acad-dreygosi-vpc.id
-
-  tags = {
-    Name = "${var.prefix}-rt"
-    Creator = var.creator
-  }
+resource "aws_route" "acad-dreygosi-route" {
+  route_table_id         = aws_vpc.acad-dreygosi-vpc.main_route_table_id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.acad-dreygosi-igw.id
 }
