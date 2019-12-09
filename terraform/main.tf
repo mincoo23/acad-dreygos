@@ -1,15 +1,15 @@
 provider "aws" {
-    region = var.region
+  region = var.region
 }
 
 resource "aws_vpc" "acad-dreygosi-vpc" {
-    cidr_block = "10.0.0.0/16"
-    enable_dns_hostnames = true
-    
-    tags = {
-        Name = "${var.prefix}-vpc"
-        Creator = var.creator
-    }
+  cidr_block = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  
+  tags = {
+    Name = "${var.prefix}-vpc"
+    Creator = var.creator
+  }
 }
 
 resource "aws_subnet" "acad-dreygosi-subnet" {
@@ -29,6 +29,15 @@ resource "aws_internet_gateway" "acad-dreygosi-igw" {
 
   tags = {
     Name = "${var.prefix}-igw"
+    Creator = var.creator
+  }
+}
+
+resource "aws_route_table" "acad-dreygosi-rt" {
+  vpc_id = aws_vpc.acad-dreygosi-vpc.id
+
+  tags = {
+    Name = "${var.prefix}-rt"
     Creator = var.creator
   }
 }

@@ -5,9 +5,9 @@ variable "region" {
 }
 
 variable "availability_zone" {
-  type = string
-  description = "The availability zone to associate with the subnet."
-  default = "eu-central-1a"
+    type = string
+    description = "The availability zone to associate with the subnet."
+    default = "eu-central-1a"
 }
 
 variable "prefix" {
