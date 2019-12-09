@@ -6,7 +6,7 @@ resource "aws_vpc" "acad-dreygosi-vpc" {
     cidr_block = "10.0.0.0/16"
     enable_dns_hostnames = true
     
-    tags {
+    tags = {
         Name = "${var.prefix}-vpc"
         Creator = var.creator
     }
@@ -18,7 +18,7 @@ resource "aws_subnet" "acad-dreygosi-subnet" {
   availability_zone = var.availability_zone
   map_public_ip_on_launch = true
 
-  tags {
+  tags = {
     Name = "${var.prefix}-subnet"
     Creator = var.creator
   }
@@ -27,7 +27,7 @@ resource "aws_subnet" "acad-dreygosi-subnet" {
 resource "aws_internet_gateway" "acad-dreygosi-igw" {
   vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
 
-  tags {
+  tags = {
     Name = "${var.prefix}-igw"
     Creator = var.creator
   }
