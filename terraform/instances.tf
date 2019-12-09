@@ -5,11 +5,36 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
   subnet_id                   = aws_subnet.acad-dreygosi-subnet.id
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.acad-dreygosi-sg.id]
+  key_name                    = module.acad-dreygosi-dynamic-keys.key_name
+
+  connection {
+    user        = "ubuntu"
+    private_key = module.acad-dreygosi-dynamic-keys.private_key_pem
+    host        = self.public_ip
+  }
+
+  provisioner "file" {
+    source      = "../index.html"
+    destination = "~" //"/var/www/html"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt update"
+    ]
+  }
 
   tags = {
     Name    = "${var.prefix}-ec2-instance"
     Creator = var.creator
   }
+}
+
+module "acad-dreygosi-dynamic-keys" {
+  source  = "mitchellh/dynamic-keys/aws"
+  version = "2.0.0"
+  path    = "${path.root}/keys"
+  name    = "${var.creator}-key"
 }
 
 data "aws_ami" "acad-dreygosi-ami" {
