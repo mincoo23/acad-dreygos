@@ -1,9 +1,10 @@
 resource "aws_instance" "acad-dreygosi-ec2-instance" {
+  count                       = 3
   ami                         = data.aws_ami.acad-dreygosi-ami.id
   instance_type               = var.instance_type
   subnet_id                   = aws_subnet.acad-dreygosi-subnet.id
   associate_public_ip_address = true
-  vpc_security_group_ids = [aws_security_group.acad-dreygosi-sg.id]
+  vpc_security_group_ids      = [aws_security_group.acad-dreygosi-sg.id]
 
   tags = {
     Name    = "${var.prefix}-ec2-instance"

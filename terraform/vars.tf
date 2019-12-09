@@ -27,3 +27,9 @@ variable "instance_type" {
   description = "The type of the instance."
   default     = "t2.micro"
 }
+
+variable "instance_count" {
+  type        = number
+  description = "The number of EC2 instances to be launched."
+  default     = 3
+}
