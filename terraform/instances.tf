@@ -15,12 +15,14 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
 
   provisioner "file" {
     source      = "../index.html"
-    destination = "~" //"/var/www/html"
+    destination = "/var/www/html"
   }
 
   provisioner "remote-exec" {
     inline = [
-      "sudo apt update"
+      "sudo apt update",
+      "sudo apt install apache2",
+      "sudo systemctl start apache2"
     ]
   }
 
