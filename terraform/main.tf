@@ -44,74 +44,32 @@ resource "aws_route_table_association" "acad-dreygosi-rt-association" {
   route_table_id = aws_vpc.acad-dreygosi-vpc.main_route_table_id
 }
 
-resource "aws_security_group" "acad-dreygosi-elb-sg" {
+resource "aws_security_group" "acad-dreygosi-sg" {
   vpc_id = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 0
+    to_port     = 0
     protocol    = "tcp"
     cidr_blocks = [var.own_ip]
   }
 
   egress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 0
+    to_port     = 0
     protocol    = "tcp"
     cidr_blocks = [var.everywhere]
   }
 
   tags = {
-    Name    = "${var.prefix}-elb-sg"
-    Creator = var.creator
-  }
-}
-
-resource "aws_security_group_rule" "acad-dreygosi-elb-sg-rule-ingress" {
-  security_group_id        = aws_security_group.acad-dreygosi-elb-sg.id
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
-  type                     = "ingress"
-  source_security_group_id = aws_security_group.acad-dreygosi-ec2-sg.id
-}
-
-resource "aws_security_group_rule" "acad-dreygosi-elb-sg-rule-egress" {
-  security_group_id        = aws_security_group.acad-dreygosi-elb-sg.id
-  from_port                = 0
-  to_port                  = 0
-  protocol                 = "tcp"
-  type                     = "egress"
-  source_security_group_id = aws_security_group.acad-dreygosi-ec2-sg.id
-}
-
-resource "aws_security_group" "acad-dreygosi-ec2-sg" {
-  description = "Security group for the instances hosting the web server."
-  vpc_id      = aws_vpc.acad-dreygosi-vpc.id
-
-  ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "tcp"
-    security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
-  }
-
-  egress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "tcp"
-    security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
-  }
-
-  tags = {
-    Name    = "${var.prefix}-ec2-sg"
+    Name    = "${var.prefix}-sg"
     Creator = var.creator
   }
 }
 
 resource "aws_elb" "acad-dreygosi-elb" {
   name            = "${var.prefix}-elb"
-  security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
+  security_groups = [aws_security_group.acad-dreygosi-sg.id]
   subnets         = [aws_subnet.acad-dreygosi-subnet.id]
   instances       = aws_instance.acad-dreygosi-ec2-instance.*.id
 
