@@ -48,29 +48,21 @@ resource "aws_security_group" "acad-dreygosi-sg" {
   vpc_id = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "tcp"
-    cidr_blocks = [var.own_ip]
+    from_port = 0
+    to_port   = 80
+    protocol  = "tcp"
+    self      = true
   }
 
   ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "tcp"
-    self      = true
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "tcp"
-    self      = true
-  }
-
-  egress {
     from_port   = 0
-    to_port     = 0
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.own_ip]
+  }
+  egress {
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [var.everywhere]
   }
