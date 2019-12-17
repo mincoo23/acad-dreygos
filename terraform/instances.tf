@@ -6,30 +6,35 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.acad-dreygosi-sg.id]
   key_name                    = module.acad-dreygosi-dynamic-keys.key_name
+  user_data                   = "${data.template_file.user_data.rendered}"
 
-  connection {
-    user        = "ubuntu"
-    private_key = module.acad-dreygosi-dynamic-keys.private_key_pem
-    host        = self.public_ip
-  }
+  # connection {
+  #   user        = "ubuntu"
+  #   private_key = module.acad-dreygosi-dynamic-keys.private_key_pem
+  #   host        = self.public_ip
+  # }
 
   # provisioner "file" {
   #   source      = "../index.html"
   #   destination = "/var/www/html"
   # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update -y",
-      "sudo apt install apache2 -y",
-      "sudo systemctl start apache2"
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo apt update -y",
+  #     "sudo apt install apache2 -y",
+  #     "sudo systemctl start apache2"
+  #   ]
+  # }
 
   tags = {
     Name    = "${var.prefix}-ec2-instance"
     Creator = var.creator
   }
+}
+
+data "template_file" "user_data" {
+  template = "${file("${path.module}/userdata.tpl")}"
 }
 
 module "acad-dreygosi-dynamic-keys" {
