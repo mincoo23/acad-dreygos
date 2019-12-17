@@ -13,10 +13,10 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
     host        = self.public_ip
   }
 
-  provisioner "file" {
-    source      = "../index.html"
-    destination = "/var/www/html"
-  }
+  # provisioner "file" {
+  #   source      = "../index.html"
+  #   destination = "/var/www/html"
+  # }
 
   provisioner "remote-exec" {
     inline = [
