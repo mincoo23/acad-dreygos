@@ -49,17 +49,31 @@ resource "aws_security_group" "acad-dreygosi-elb-sg" {
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
-    from_port   = 0
+    from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [var.own_ip]
   }
 
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-ec2-sg.id]
+  }
+
   egress {
-    from_port   = 0
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-ec2-sg.id]
+  }
+
+  egress {
+    from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = [var.everywhere]
+    cidr_blocks = [var.own_ip]
   }
 
   tags = {
@@ -73,14 +87,14 @@ resource "aws_security_group" "acad-dreygosi-ec2-sg" {
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
-    from_port       = 0
+    from_port       = 80
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
   }
 
   egress {
-    from_port       = 0
+    from_port       = 80
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
