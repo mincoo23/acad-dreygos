@@ -70,8 +70,8 @@ resource "aws_security_group" "acad-dreygosi-sg" {
 
 resource "aws_elb" "acad-dreygosi-elb" {
   availability_zones = [var.availability_zone]
-  security_groups    = [aws_security_group.acad-dreygosi-sg]
-  subnets            = [aws_subnet.acad-dreygosi-subnet]
+  security_groups    = [aws_security_group.acad-dreygosi-sg.id]
+  subnets            = [aws_subnet.acad-dreygosi-subnet.id]
   instances          = aws_instance.acad-dreygosi-ec2-instance.*.id
 
   listener {
