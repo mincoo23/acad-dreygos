@@ -54,6 +54,20 @@ resource "aws_security_group" "acad-dreygosi-sg" {
     cidr_blocks = [var.own_ip]
   }
 
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "tcp"
+    self      = true
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "tcp"
+    self      = true
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
