@@ -49,6 +49,13 @@ resource "aws_security_group" "acad-dreygosi-sg" {
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
+    from_port = 0
+    to_port   = 80
+    protocol  = "tcp"
+    self      = true
+  }
+
+  ingress {
     from_port   = 0
     to_port     = 80
     protocol    = "tcp"
@@ -69,9 +76,10 @@ resource "aws_security_group" "acad-dreygosi-sg" {
 }
 
 resource "aws_elb" "acad-dreygosi-elb" {
-  security_groups    = [aws_security_group.acad-dreygosi-sg.id]
-  subnets            = [aws_subnet.acad-dreygosi-subnet.id]
-  instances          = aws_instance.acad-dreygosi-ec2-instance.*.id
+  name            = "${var.prefix}-elb"
+  security_groups = [aws_security_group.acad-dreygosi-sg.id]
+  subnets         = [aws_subnet.acad-dreygosi-subnet.id]
+  instances       = aws_instance.acad-dreygosi-ec2-instance.*.id
 
   listener {
     instance_port     = 80
