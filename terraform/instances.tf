@@ -20,8 +20,8 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo apt update",
-      "sudo apt install apache2",
+      "sudo apt update -y",
+      "sudo apt install apache2 -y",
       "sudo systemctl start apache2"
     ]
   }
