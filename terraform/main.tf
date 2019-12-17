@@ -44,16 +44,9 @@ resource "aws_route_table_association" "acad-dreygosi-rt-association" {
   route_table_id = aws_vpc.acad-dreygosi-vpc.main_route_table_id
 }
 
-resource "aws_security_group" "acad-dreygosi-sg" {
-  description = "Security group for the instances in the public subnet."
+resource "aws_security_group" "acad-dreygosi-elb-sg" {
+  description = "Security group for the ELB."
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
-
-  ingress {
-    from_port = 0
-    to_port   = 80
-    protocol  = "tcp"
-    self      = true
-  }
 
   ingress {
     from_port   = 0
@@ -70,14 +63,38 @@ resource "aws_security_group" "acad-dreygosi-sg" {
   }
 
   tags = {
-    Name    = "${var.prefix}-sg"
+    Name    = "${var.prefix}-elb-sg"
+    Creator = var.creator
+  }
+}
+
+resource "aws_security_group" "acad-dreygosi-ec2-sg" {
+  description = "Security group for the instances hosting the web server."
+  vpc_id      = aws_vpc.acad-dreygosi-vpc.id
+
+  ingress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
+  }
+
+  egress {
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
+  }
+
+  tags = {
+    Name    = "${var.prefix}-ec2-sg"
     Creator = var.creator
   }
 }
 
 resource "aws_elb" "acad-dreygosi-elb" {
   name            = "${var.prefix}-elb"
-  security_groups = [aws_security_group.acad-dreygosi-sg.id]
+  security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
   subnets         = [aws_subnet.acad-dreygosi-subnet.id]
   instances       = aws_instance.acad-dreygosi-ec2-instance.*.id
 
