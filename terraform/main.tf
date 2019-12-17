@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_vpc" "acad-dreygosi-vpc" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_vpc" "acad-dreygosi-vpc" {
 
 resource "aws_subnet" "acad-dreygosi-subnet" {
   vpc_id                  = "${aws_vpc.acad-dreygosi-vpc.id}"
-  cidr_block              = "10.0.0.0/24"
+  cidr_block              = var.subnet_cidr_block
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
 
@@ -35,7 +35,7 @@ resource "aws_internet_gateway" "acad-dreygosi-igw" {
 
 resource "aws_route" "acad-dreygosi-route" {
   route_table_id         = aws_vpc.acad-dreygosi-vpc.main_route_table_id
-  destination_cidr_block = "0.0.0.0/0"
+  destination_cidr_block = var.everywhere
   gateway_id             = aws_internet_gateway.acad-dreygosi-igw.id
 }
 
@@ -45,7 +45,6 @@ resource "aws_route_table_association" "acad-dreygosi-rt-association" {
 }
 
 resource "aws_security_group" "acad-dreygosi-sg" {
-  name        = "acad-dreygosi-sg"
   description = "Security group for the instances in the public subnet."
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
 
@@ -53,18 +52,48 @@ resource "aws_security_group" "acad-dreygosi-sg" {
     from_port   = 0
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["212.250.145.34/32"]
+    cidr_blocks = [var.own_ip]
   }
 
   egress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [var.everywhere]
   }
 
   tags = {
     Name    = "${var.prefix}-sg"
     Creator = var.creator
+  }
+}
+
+resource "aws_elb" "acad-dreygosi-elb" {
+  availability_zones = [var.availability_zone]
+  security_groups    = [aws_security_group.acad-dreygosi-sg]
+  subnets            = [aws_subnet.acad-dreygosi-subnet]
+  instances          = aws_instance.acad-dreygosi-ec2-instance.*.id
+
+  listener {
+    instance_port     = 80
+    instance_protocol = "tcp"
+    lb_port           = 80
+    lb_protocol       = "tcp"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:80/"
+    interval            = 5
+  }
+
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = {
+    Name = "${var.prefix}-elb"
   }
 }
