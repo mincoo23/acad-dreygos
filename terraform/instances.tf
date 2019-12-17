@@ -37,12 +37,12 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/userdata.tpl")}"
 }
 
-module "acad-dreygosi-dynamic-keys" {
-  source  = "mitchellh/dynamic-keys/aws"
-  version = "2.0.0"
-  path    = "${path.root}/keys"
-  name    = "${var.creator}-key"
-}
+# module "acad-dreygosi-dynamic-keys" {
+#   source  = "mitchellh/dynamic-keys/aws"
+#   version = "2.0.0"
+#   path    = "${path.root}/keys"
+#   name    = "${var.creator}-key"
+# }
 
 data "aws_ami" "acad-dreygosi-ami" {
   most_recent = true

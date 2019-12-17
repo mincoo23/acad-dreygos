@@ -51,15 +51,15 @@ resource "aws_security_group" "acad-dreygosi-sg" {
 
   ingress {
     from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    to_port     = 80
+    protocol    = "HTTP"
+    cidr_blocks = ["212.250.145.34/32"]
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
+    from_port   = 80
+    to_port     = 90
+    protocol    = "HTTP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
