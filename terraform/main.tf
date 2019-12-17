@@ -85,7 +85,7 @@ resource "aws_elb" "acad-dreygosi-elb" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "TCP:80/"
+    target              = "TCP:80"
     interval            = 5
   }
 

@@ -5,8 +5,9 @@ resource "aws_instance" "acad-dreygosi-ec2-instance" {
   subnet_id                   = aws_subnet.acad-dreygosi-subnet.id
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.acad-dreygosi-sg.id]
-  # key_name                    = module.acad-dreygosi-dynamic-keys.key_name
   user_data                   = "${data.template_file.user_data.rendered}"
+
+  # key_name                    = module.acad-dreygosi-dynamic-keys.key_name
 
   # connection {
   #   user        = "ubuntu"
