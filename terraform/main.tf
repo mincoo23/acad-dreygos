@@ -45,7 +45,6 @@ resource "aws_route_table_association" "acad-dreygosi-rt-association" {
 }
 
 resource "aws_security_group" "acad-dreygosi-elb-sg" {
-  description = "Security group for the ELB."
   vpc_id      = aws_vpc.acad-dreygosi-vpc.id
 
   ingress {
