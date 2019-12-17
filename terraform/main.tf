@@ -55,20 +55,6 @@ resource "aws_security_group" "acad-dreygosi-elb-sg" {
     cidr_blocks = [var.own_ip]
   }
 
-  ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.acad-dreygosi-ec2-sg.id]
-  }
-
-  egress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    security_groups = [aws_security_group.acad-dreygosi-ec2-sg.id]
-  }
-
   egress {
     from_port   = 80
     to_port     = 80
@@ -80,6 +66,24 @@ resource "aws_security_group" "acad-dreygosi-elb-sg" {
     Name    = "${var.prefix}-elb-sg"
     Creator = var.creator
   }
+}
+
+resource "aws_security_group_rule" "acad-dreygosi-elb-sg-rule-ingress" {
+  security_group_id        = aws_security_group.acad-dreygosi-elb-sg.id
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  type                     = "ingress"
+  source_security_group_id = aws_security_group.acad-dreygosi-ec2-sg.id
+}
+
+resource "aws_security_group_rule" "acad-dreygosi-elb-sg-rule-egress" {
+  security_group_id        = aws_security_group.acad-dreygosi-elb-sg.id
+  from_port                = 80
+  to_port                  = 80
+  protocol                 = "tcp"
+  type                     = "egress"
+  source_security_group_id = aws_security_group.acad-dreygosi-ec2-sg.id
 }
 
 resource "aws_security_group" "acad-dreygosi-ec2-sg" {
