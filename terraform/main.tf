@@ -56,7 +56,7 @@ resource "aws_security_group" "acad-dreygosi-elb-sg" {
   }
 
   egress {
-    from_port   = 80
+    from_port   = 0
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [var.everywhere]
@@ -80,8 +80,8 @@ resource "aws_security_group" "acad-dreygosi-ec2-sg" {
   }
 
   egress {
-    from_port       = 80
-    to_port         = 0
+    from_port       = 0
+    to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.acad-dreygosi-elb-sg.id]
   }
