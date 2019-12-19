@@ -2,7 +2,7 @@ resource "aws_db_instance" "dreygosidb" {
   allocated_storage     = 10
   max_allocated_storage = 20
 
-  db_subnet_group_name = aws_subnet.acad-dreygosi-subnet-db.id
+  db_subnet_group_name = aws_subnet.acad-dreygosi-subnet-group.id
 
   storage_type         = "gp2"
   engine               = "mysql"
@@ -19,6 +19,16 @@ resource "aws_db_instance" "dreygosidb" {
 
   tags = {
     Name    = "dreygosidb"
+    Creator = var.creator
+  }
+}
+
+resource "aws_db_subnet_group" "acad-dreygosi-subnet-group" {
+  name       = "acad-dreygosi-subnet-group"
+  subnet_ids = [aws_subnet.acad-dreygosi-subnet.id, aws_subnet.acad-dreygosi-subnet-db.id]
+
+  tags = {
+    Name = "${var.prefix}-subnet-group"
     Creator = var.creator
   }
 }

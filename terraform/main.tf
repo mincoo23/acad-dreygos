@@ -2,9 +2,11 @@ provider "aws" {
   region = var.region
 }
 
+# AWS VPC
 resource "aws_vpc" "acad-dreygosi-vpc" {
   cidr_block           = var.vpc_cidr_block
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   tags = {
     Name    = "${var.prefix}-vpc"
@@ -12,6 +14,7 @@ resource "aws_vpc" "acad-dreygosi-vpc" {
   }
 }
 
+# Public subnet
 resource "aws_subnet" "acad-dreygosi-subnet" {
   vpc_id                  = "${aws_vpc.acad-dreygosi-vpc.id}"
   cidr_block              = var.subnet_cidr_block
@@ -24,10 +27,11 @@ resource "aws_subnet" "acad-dreygosi-subnet" {
   }
 }
 
+# Private subnet
 resource "aws_subnet" "acad-dreygosi-subnet-db" {
   vpc_id            = aws_vpc.acad-dreygosi-vpc.id
   cidr_block        = "10.0.1.0/24"
-  availability_zone = var.availability_zone
+  availability_zone = "eu-central-1b"
 
   tags = {
     Name    = "${var.prefix}-subnet-db"
@@ -35,6 +39,7 @@ resource "aws_subnet" "acad-dreygosi-subnet-db" {
   }
 }
 
+# Internet Gateway
 resource "aws_internet_gateway" "acad-dreygosi-igw" {
   vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
 
@@ -44,17 +49,20 @@ resource "aws_internet_gateway" "acad-dreygosi-igw" {
   }
 }
 
+# Direct instance traffic to the internet
 resource "aws_route" "acad-dreygosi-route" {
   route_table_id         = aws_vpc.acad-dreygosi-vpc.main_route_table_id
   destination_cidr_block = var.everywhere
   gateway_id             = aws_internet_gateway.acad-dreygosi-igw.id
 }
 
+# Associate route with main VPC route table
 resource "aws_route_table_association" "acad-dreygosi-rt-association" {
   subnet_id      = aws_subnet.acad-dreygosi-subnet.id
   route_table_id = aws_vpc.acad-dreygosi-vpc.main_route_table_id
 }
 
+# Public subnet security group
 resource "aws_security_group" "acad-dreygosi-sg" {
   vpc_id = aws_vpc.acad-dreygosi-vpc.id
 
@@ -85,10 +93,12 @@ resource "aws_security_group" "acad-dreygosi-sg" {
   }
 }
 
+# Private subnet security group
 resource "aws_security_group" "acad-dreygosi-sg-db" {
 
 }
 
+# ELB definition
 resource "aws_elb" "acad-dreygosi-elb" {
   name            = "${var.prefix}-elb"
   security_groups = [aws_security_group.acad-dreygosi-sg.id]
