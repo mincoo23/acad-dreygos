@@ -2,7 +2,7 @@ resource "aws_db_instance" "default" {
   allocated_storage     = 10
   max_allocated_storage = 20
 
-db_subnet_group_name = aws_subnet.acad-dreygosi-subnet-db
+db_subnet_group_name = aws_subnet.acad-dreygosi-subnet-db.id
 
   storage_type          = "gp2"
   engine                = "mysql"
