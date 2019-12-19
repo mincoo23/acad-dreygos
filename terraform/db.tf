@@ -2,7 +2,7 @@ resource "aws_db_instance" "dreygosidb" {
   allocated_storage     = 10
   max_allocated_storage = 20
 
-  db_subnet_group_name = aws_subnet.acad-dreygosi-subnet-group.id
+  db_subnet_group_name = aws_db_subnet_group.acad-dreygosi-subnet-group.id
 
   storage_type         = "gp2"
   engine               = "mysql"
