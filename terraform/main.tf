@@ -86,7 +86,7 @@ resource "aws_security_group" "acad-dreygosi-sg" {
 }
 
 resource "aws_security_group" "acad-dreygosi-sg-db" {
-  
+
 }
 
 resource "aws_elb" "acad-dreygosi-elb" {
