@@ -39,6 +39,17 @@ resource "aws_subnet" "acad-dreygosi-subnet-db" {
   }
 }
 
+# DB subnet group
+resource "aws_db_subnet_group" "acad-dreygosi-subnet-group" {
+  name       = "acad-dreygosi-subnet-group"
+  subnet_ids = [aws_subnet.acad-dreygosi-subnet.id, aws_subnet.acad-dreygosi-subnet-db.id]
+
+  tags = {
+    Name    = "${var.prefix}-subnet-group"
+    Creator = var.creator
+  }
+}
+
 # Internet Gateway
 resource "aws_internet_gateway" "acad-dreygosi-igw" {
   vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
