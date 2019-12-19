@@ -1,4 +1,4 @@
-resource "aws_db_instance" "dreygosiDB" {
+resource "aws_db_instance" "dreygosidb" {
   allocated_storage     = 10
   max_allocated_storage = 20
 
@@ -9,7 +9,7 @@ resource "aws_db_instance" "dreygosiDB" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   name                 = "acad-dreygosi-db"
-  identifier = "dreygosiDB"
+  identifier = "dreygosidb"
   parameter_group_name = "default.mysql5.7"
 
   username = "root"
@@ -18,7 +18,7 @@ resource "aws_db_instance" "dreygosiDB" {
   vpc_security_group_ids = [aws_security_group.acad-dreygosi-sg-db.id]
 
   tags = {
-    Name    = "dreygosiDB"
+    Name    = "dreygosidb"
     Creator = var.creator
   }
 }
