@@ -1,4 +1,4 @@
-resource "aws_db_instance" "acad-dreygosi-db" {
+resource "aws_db_instance" "acadDreygosiDB" {
   allocated_storage     = 10
   max_allocated_storage = 20
 
@@ -17,7 +17,7 @@ resource "aws_db_instance" "acad-dreygosi-db" {
   vpc_security_group_ids = [aws_security_group.acad-dreygosi-sg-db.id]
 
   tags = {
-    Name    = "${var.prefix}-db"
+    Name    = "acadDreygosiDB"
     Creator = var.creator
   }
 }
