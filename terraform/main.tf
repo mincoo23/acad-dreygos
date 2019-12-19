@@ -24,6 +24,17 @@ resource "aws_subnet" "acad-dreygosi-subnet" {
   }
 }
 
+resource "aws_subnet" "acad-dreygosi-subnet-db" {
+  vpc_id            = aws_vpc.acad-dreygosi-vpc.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = var.availability_zone
+
+  tags = {
+    Name    = "${var.prefix}-subnet-db"
+    Creator = var.creator
+  }
+}
+
 resource "aws_internet_gateway" "acad-dreygosi-igw" {
   vpc_id = "${aws_vpc.acad-dreygosi-vpc.id}"
 
@@ -72,6 +83,10 @@ resource "aws_security_group" "acad-dreygosi-sg" {
     Name    = "${var.prefix}-sg"
     Creator = var.creator
   }
+}
+
+resource "aws_security_group" "acad-dreygosi-sg-db" {
+  
 }
 
 resource "aws_elb" "acad-dreygosi-elb" {
