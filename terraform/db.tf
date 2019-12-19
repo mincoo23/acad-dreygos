@@ -8,8 +8,8 @@ resource "aws_db_instance" "dreygosidb" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  name                 = "acad-dreygosi-db"
-  identifier = "dreygosidb"
+  name                 = "dreygosidb"
+  identifier           = "dreygosidb"
   parameter_group_name = "default.mysql5.7"
 
   username = "root"
