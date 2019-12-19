@@ -106,7 +106,26 @@ resource "aws_security_group" "acad-dreygosi-sg" {
 
 # Private subnet security group
 resource "aws_security_group" "acad-dreygosi-sg-db" {
+  vpc_id = aws_vpc.acad-dreygosi-vpc.id
 
+  ingress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-sg.id]
+  }
+
+  egress {
+    from_port       = 3306
+    to_port         = 3306
+    protocol        = "tcp"
+    security_groups = [aws_security_group.acad-dreygosi-sg.id]
+  }
+
+  tags = {
+    Name    = "${var.prefix}-sg-db"
+    Creator = var.creator
+  }
 }
 
 # ELB definition
